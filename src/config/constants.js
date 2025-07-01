@@ -1,0 +1,2 @@
+export const X_LOGO_URL = "https://storage.googleapis.com/hostinger-horizons-assets-prod/dd26622e-132b-41db-babc-6d951e12b05d/e7476ee5098e15fe4d973f2c6f2c587d.png";
+export const VERIFIED_BADGE_URL = "https://storage.googleapis.com/hostinger-horizons-assets-prod/dd26622e-132b-41db-babc-6d951e12b05d/verified_badge_placeholder.png"; // Placeholder URL
