@@ -11,7 +11,8 @@ export default function ConfirmPhoneNumberPage() {
   const { showToast } = useAppState(); // showToast is still needed for system errors
 
   const handleConfirmNumber = () => {
-    const phoneRegex = /^0\d{10}$/; 
+    // More flexible phone regex - accepts various formats
+    const phoneRegex = /^[\+]?[0-9\-\(\)\s]{7,15}$/; 
 
     if (!phoneNumber.trim()) {
       setPhoneNumberError("Please enter your phone number.");
@@ -19,7 +20,7 @@ export default function ConfirmPhoneNumberPage() {
     }
 
     if (!phoneRegex.test(phoneNumber)) {
-      setPhoneNumberError("Invalid phone number. Please enter an 11-digit number starting with 0.");
+      setPhoneNumberError("Invalid phone number. Please enter a valid phone number.");
       return;
     }
     

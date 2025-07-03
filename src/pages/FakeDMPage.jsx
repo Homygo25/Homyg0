@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
 import { ShieldCheck, MessageSquare } from 'lucide-react';
-import { X_LOGO_URL, VERIFIED_BADGE_URL } from '@/config/constants';
+import { X_LOGO_URL } from '@/config/constants';
 
 const LINK_STORAGE_KEY = 'issuedVerificationTokens';
 
@@ -41,7 +41,10 @@ export default function FakeDMPage() {
               <img src={X_LOGO_URL} alt="X Support Logo" className="w-8 h-8 rounded-full mr-3" />
               <div>
                 <h1 className="text-lg font-bold flex items-center">
-                  X Support <img src={VERIFIED_BADGE_URL} alt="Verified" className="w-5 h-5 ml-1" />
+                  X Support 
+                  <svg className="w-5 h-5 ml-1 text-blue-500" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 0C8.74 0 6.53 1.77 5.78 4.45C2.77 5.2 0 7.41 0 12c0 4.59 2.77 6.8 5.78 7.55C6.53 22.23 8.74 24 12 24c3.26 0 5.47-1.77 6.22-4.45C21.23 18.8 24 16.59 24 12c0-4.59-2.77-6.8-5.78-7.55C18.47 1.77 16.26 0 12 0zm5.85 8.15l-7 7c-.2.2-.45.3-.7.3s-.5-.1-.7-.3l-3-3c-.4-.4-.4-1 0-1.4s1-.4 1.4 0l2.3 2.3 6.3-6.3c.4-.4 1-.4 1.4 0s.4 1 0 1.4z"/>
+                  </svg>
                 </h1>
                 <p className="text-xs text-gray-400">@XSupport</p>
               </div>

@@ -10,8 +10,12 @@ export default function AdminDashboardPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('timestamp');
 
+  // Add logging to confirm component is rendering
+  console.log('AdminDashboardPage is rendering');
+
   // Auto-refresh data every 5 seconds
   useEffect(() => {
+    console.log('AdminDashboardPage mounted');
     const interval = setInterval(() => {
       setLastRefresh(new Date());
     }, 5000);

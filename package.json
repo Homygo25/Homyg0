@@ -11,7 +11,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "start": "vite preview --port $PORT --host 0.0.0.0"
+    "start": "vite preview --port $PORT --host 0.0.0.0",
+    "security-check": "node -e \"const fs = require('fs'); if (!fs.existsSync('.env')) { console.error('❌ .env file missing! Copy .env.example to .env'); process.exit(1); } else { console.log('✅ .env file found'); }\""
   },
   "dependencies": {
     "@emotion/is-prop-valid": "^1.2.1",

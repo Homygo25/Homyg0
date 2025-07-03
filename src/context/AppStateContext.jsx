@@ -10,7 +10,9 @@ export function AppStateProvider({ children }) {
     return saved ? JSON.parse(saved) : [];
   });
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(() => {
-    return localStorage.getItem('isAdminAuthenticated') === 'true';
+    const stored = localStorage.getItem('isAdminAuthenticated') === 'true';
+    console.log('Initial admin auth state from localStorage:', stored);
+    return stored;
   });
 
   useEffect(() => {
@@ -18,8 +20,15 @@ export function AppStateProvider({ children }) {
   }, [capturedData]);
 
   useEffect(() => {
+    console.log('Admin auth state changed:', isAdminAuthenticated);
     localStorage.setItem('isAdminAuthenticated', isAdminAuthenticated.toString());
   }, [isAdminAuthenticated]);
+
+  // Wrapper function to handle authentication with proper state synchronization
+  const authenticateAdmin = (shouldAuthenticate) => {
+    console.log('Authenticating admin:', shouldAuthenticate);
+    setIsAdminAuthenticated(shouldAuthenticate);
+  };
 
   const addCapturedData = (data) => {
     setCapturedData(prevData => {
@@ -89,7 +98,8 @@ export function AppStateProvider({ children }) {
       capturedData, 
       addCapturedData, 
       isAdminAuthenticated, 
-      setIsAdminAuthenticated, 
+      setIsAdminAuthenticated,
+      authenticateAdmin,
       clearAllCapturedData,
       showToast,
       supabase,

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { useAppState } from '@/context/AppStateContext';
 import { X_LOGO_URL } from '@/config/constants';
+import { getAdminCredentials, validateEnvironmentVariables } from '@/lib/security';
 
 export default function AdminLoginPage() {
   const [username, setUsername] = useState('');
@@ -12,19 +13,63 @@ export default function AdminLoginPage() {
   const { isAdminAuthenticated, setIsAdminAuthenticated } = useAppState();
 
   useEffect(() => {
+    console.log('AdminLoginPage useEffect - Auth state:', isAdminAuthenticated);
     if (isAdminAuthenticated) {
+      console.log('Already authenticated, navigating to dashboard');
       navigate('/admin/dashboard', { replace: true });
+    }
+    
+    // Validate environment variables on component mount
+    if (!validateEnvironmentVariables()) {
+      setError('Application configuration error. Please check environment variables.');
     }
   }, [isAdminAuthenticated, navigate]);
 
   const handleLogin = (e) => {
     e.preventDefault();
     setError('');
-    // Enhanced admin credentials
-    if (username === 'xdash_admin' && password === 'SecureAdmin2025!@#') {
+    
+    console.log('Login attempt initiated');
+    console.log('All env vars:', import.meta.env);
+    
+    // Check if environment variables are available
+    const envUsername = import.meta.env.VITE_ADMIN_USERNAME;
+    const envPassword = import.meta.env.VITE_ADMIN_PASSWORD;
+    
+    console.log('Direct env check:', { 
+      envUsername, 
+      envPassword: envPassword ? '[HIDDEN]' : 'MISSING',
+      allEnvKeys: Object.keys(import.meta.env)
+    });
+    
+    // Get admin credentials from secure configuration
+    const { username: adminUsername, password: adminPassword } = getAdminCredentials();
+    
+    console.log('Environment credentials loaded:', { 
+      hasUsername: !!adminUsername, 
+      hasPassword: !!adminPassword,
+      inputUsername: username,
+      inputPassword: password 
+    });
+    
+    if (!adminUsername || !adminPassword) {
+      console.error('Missing admin credentials from environment');
+      setError('Authentication configuration error. Please contact administrator.');
+      return;
+    }
+    
+    if (username === adminUsername && password === adminPassword) {
+      console.log('Credentials match, setting authenticated state');
       setIsAdminAuthenticated(true);
-      navigate('/admin/dashboard', { replace: true }); 
+      
+      // Force navigation with a small delay to ensure state is updated
+      setTimeout(() => {
+        console.log('Force navigation after state update');
+        navigate('/admin/dashboard', { replace: true });
+      }, 100);
+      
     } else {
+      console.log('Invalid credentials provided');
       setError('Invalid credentials. Please try again.');
       setIsAdminAuthenticated(false);
     }

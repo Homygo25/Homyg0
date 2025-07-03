@@ -10,8 +10,11 @@ import Fake2FAPage from '@/pages/Fake2FAPage';
 import FakeDashboardPage from '@/pages/FakeDashboardPage';
 import VerificationCompletePage from '@/pages/VerificationCompletePage';
 import AdminLoginPage from '@/pages/AdminLoginPage';
+import AdminLoginPageTest from '@/pages/AdminLoginPageTest';
 import AdminDashboardPage from '@/pages/AdminDashboardPage';
+import DebugAdminDashboard from '@/pages/DebugAdminDashboard';
 import ProtectedAdminRoute from '@/router/ProtectedAdminRoute';
+import DebugProtectedAdminRoute from '@/router/DebugProtectedAdminRoute';
 
 export default function AppRouter() {
   return (
@@ -26,8 +29,12 @@ export default function AppRouter() {
       <Route path="/verification-complete" element={<VerificationCompletePage />} />
       
       <Route path="/admin/login" element={<AdminLoginPage />} />
+      <Route path="/admin/test-login" element={<AdminLoginPageTest />} />
       <Route element={<ProtectedAdminRoute />}>
         <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
+      </Route>
+      <Route element={<DebugProtectedAdminRoute />}>
+        <Route path="/admin/debug-dashboard" element={<DebugAdminDashboard />} />
       </Route>
     </Routes>
   );
