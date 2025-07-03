@@ -1,0 +1,14 @@
+# Files to ignore during Heroku slug compilation
+*.md
+test-env.js
+verify-deployment.sh
+.git/
+src/
+plugins/
+tools/
+public/
+postcss.config.js
+tailwind.config.js
+vite.config.js
+start-server.bat
+start-secure.bat

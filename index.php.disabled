@@ -1,0 +1,6 @@
+<?php
+// This is a Node.js project, not PHP
+// Redirect to the proper Node.js application
+header('Location: /');
+exit();
+?>
